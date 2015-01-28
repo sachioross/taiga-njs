@@ -1,84 +1,26 @@
 var https = require('https');
+var projects = require('./lib/projects.js');
+var issues = require('./lib/issues.js');
+var utilities = require('./lib/utils.js');
+var request = require('request');
 
-var Taiga = function(authToken) {
+var Client = function(authToken) {
   this.authToken = authToken;
-}
-
-Taiga.prototype._createHttpOptions = function(path, method) {
-
-  return {
-    hostname: "api.taiga.io",
-    method: method,
-    path: path,
+  this.baseRequest = request.defaults({
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + this.authToken
     }
-  }
-}
-
-Taiga.prototype.listAllProjects = function() {
-    var opts = this._createHttpOptions("/api/v1/projects", 'GET');
-
-    var req = https.request(opts, function(res) {
-      var resMsg = '';
-
-      res.on('data', function(data){
-         resMsg += data;
-      })
-
-      res.on('end', function() {
-        console.log(resMsg);
-      })
-    });
-
-    req.end();
-}
-
-
-Taiga.prototype.listProjectById = function(id) {
-  var opts = this._createHttpOptions("/api/v1/projects/" + id, 'GET');
-
-  var req = https.request(opts, function(res) {
-    var resMsg = '';
-
-    res.on('data', function(data){
-      resMsg += data;
-    })
-
-    res.on('end', function() {
-      console.log(resMsg);
-    })
   });
-
-  req.end();
+  this.protocol = 'https';
+  this.host = 'api.taiga.io';
+  this.apiPath = "/api/v1/";
 }
 
-Taiga.prototype.createIssue = function(issue) {
-
-  var opts = this._createHttpOptions("/api/v1/issues", 'POST');
-
-  issue.type = 71954;
-  issue.severity = 119852;
-  issue.priority = 71928;
-  issue.status = 167823;
-
-  var req = https.request(opts, function(res) {
-    var resMsg = '';
-
-    res.on('data', function(data){
-      resMsg += data;
-    })
-
-    res.on('end', function() {
-      console.log(resMsg);
-    })
-  });
-
-  req.write(JSON.stringify(issue));
-  req.end();
-}
+Taiga = utilities.init(Client);
+Taiga = projects.init(Client);
+Taiga = issues.init(Client);
 
 module.exports = {
-  Taiga: Taiga
+  Client: Client
 }
