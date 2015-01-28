@@ -1,6 +1,6 @@
 {
   "name": "taiga-njs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NodeJS implementation of Taiga API",
   "main": "index.js",
   "scripts": {
