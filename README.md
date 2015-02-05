@@ -34,7 +34,7 @@ var Response = function(type, body) {
 ### Usage
 All calls to the API will return a wrapper response object in a promise that will contain the entire response in addition to a couple key helper fields. I may change the specific structure, but the concept will likely stay unless someone poses a really clear reason why this is wrong. 
 
-#####Issues
+#### Issues
 My current focus is around the Issues portion of the Taiga API. Currently, I can create a new high-priority, very sever issue :). 
 
 ```
